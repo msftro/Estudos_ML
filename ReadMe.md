@@ -1,6 +1,6 @@
 # Machine Learning
 
-<img src="https://github.com/msftro/Estudos_ML/assets/145237548/7c23df0a-0073-4c8a-a89c-3fb8df65855b" border="0">
+<img src="https://github.com/msftro/Estudos_ML/assets/145237548/007497c2-70ff-4e91-92fc-385fe1d78e7c" border="0" alt="young-man-sitting-at-his-desk-studying-late-at-night">
 
 ## Sobre
 
