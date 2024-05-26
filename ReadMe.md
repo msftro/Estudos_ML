@@ -1,6 +1,6 @@
 # Machine Learning
 
-<img src="https://github.com/msftro/Estudos_ML/assets/145237548/9a3e4481-d924-48d4-9ace-810ff63a3547" border="0">
+<img src="https://github.com/msftro/Estudos_ML/assets/145237548/7c23df0a-0073-4c8a-a89c-3fb8df65855b" border="0">
 
 ## Sobre
 
