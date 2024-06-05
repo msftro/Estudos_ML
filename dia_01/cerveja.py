@@ -39,3 +39,7 @@ tree.plot_tree(arvore,
                  feature_names=features,
                  filled=True)
 
+#%%
+probas = arvore.predict_proba([[-1, 1, 0, 1]])[0]
+
+pd.Series(probas, index=arvore.classes_)
