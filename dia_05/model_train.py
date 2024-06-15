@@ -35,7 +35,7 @@ imputacao_max = imputation.ArbitraryNumberImputer(variables=['avgRecorrencia'], 
 model = ensemble.RandomForestClassifier(random_state=42)
 
 params = {
-    'n_estimators': [1200],
+    'n_estimators': [1200, 1300, 1400, 1500],
     'min_samples_leaf': [20]
 }
 
@@ -82,27 +82,6 @@ grid.best_estimator_
 f_importance = meu_pipeline[-1].best_estimator_.feature_importances_
 pd.Series(f_importance, index=features).sort_values(ascending=False)
 
-# %%
-# Custom function to plot ROC curve
-def plot_roc(y_true, y_probas, title='ROC Curves', figsize=(10, 7)):
-    plt.figure(figsize=figsize)
-    classes = np.unique(y_true)
-    for i in range(len(classes)):
-        fpr, tpr, _ = metrics.roc_curve(y_true, y_probas[:, i], pos_label=classes[i])
-        plt.plot(fpr, tpr, label=f'Class {classes[i]} (area = {metrics.auc(fpr, tpr):.2f})')
-    
-    plt.plot([0, 1], [0, 1], 'k--', lw=2)
-    plt.xlim([-0.05, 1.05])
-    plt.ylim([-0.05, 1.05])
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
-    plt.title(title)
-    plt.legend(loc='lower right')
-    plt.grid(True)
-    plt.show()
-
-# Use the custom function to plot the ROC curve
-plot_roc(y_test, y_test_proba)
 
 # %%
 from yellowbrick.classifier import DiscriminationThreshold
@@ -139,15 +118,50 @@ plt.show()
 # %%
 usuarios_test['lift'] = usuarios_test['verdadeiro'].expanding().mean() / \
                         usuarios_test['verdadeiro'].mean()
-usuarios_test['baseline'] = 1
 usuarios_test
 
 
 # %%
 plt.figure(dpi=600)
 plt.plot(usuarios_test['tx_total'], usuarios_test['lift'])
-plt.plot(usuarios_test['tx_total'], usuarios_test['baseline'], color='k', linestyle='--')
+plt.plot([1, 0], [0, 0], color='k', linestyle='--')
 plt.show()
+
+# %%
+usuarios_test[150:200]
+# %%
+usuarios_test['churn'] = (usuarios_test['proba'] >= 0.345388).astype(int)
+usuarios_test['T/F'] = usuarios_test['churn'] == usuarios_test['verdadeiro']
+usuarios_test['T/F'].value_counts()
 
 
 # %%
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+
+# Calcular a matriz de confusão
+conf_matrix = confusion_matrix(y_test, y_test_predict)
+conf_matrix
+
+# %%
+import seaborn as sns
+from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
+
+# Calcular a matriz de confusão
+conf_matrix = confusion_matrix(y_test, y_test_predict)
+
+# Plotar a matriz de confusão
+plt.figure(figsize=(10, 7))
+sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues')
+plt.title('Matriz de Confusão')
+plt.xlabel('Predito')
+plt.ylabel('Verdadeiro')
+plt.show()
+
+# Exibir todas as métricas
+print("Relatório de Classificação:")
+print(classification_report(y_test, y_test_predict))
+
+# Calcular a acurácia
+accuracy = accuracy_score(y_test, y_test_predict)
+print(f'Acurácia: {accuracy:.2f}')
+
